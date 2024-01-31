@@ -1,0 +1,7 @@
+[package]
+name = "noir_bls12_381"
+type = "lib"
+authors = ["Rajesh Kanna"]
+compiler_version = ">=0.22.0"
+
+[dependencies]
