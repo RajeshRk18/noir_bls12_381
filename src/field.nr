@@ -32,7 +32,7 @@ struct BigUint56 {
 impl BigUint56 {
     // Returns zero as BigUint56.
     fn zero() -> Self {
-        Self { limbs: [0 as u56; NUM_LIMBS] }
+        BigUint56 { limbs: [0 as u56; NUM_LIMBS] }
     }
 
     // Returns one as BigUint56.
