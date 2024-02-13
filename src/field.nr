@@ -31,25 +31,25 @@ struct BigUint56 {
 
 impl BigUint56 {
     // Returns zero as BigUint56.
-    fn zero() -> Self {
+    pub fn zero() -> Self {
         BigUint56 { limbs: [0 as u56; NUM_LIMBS] }
     }
 
     // Returns one as BigUint56.
-    fn one() -> Self {
+    pub fn one() -> Self {
         let mut one = BigUint56::zero();
         one.limbs[0] = 1;
         one
     }
     
-    fn from_u56(val: u56) -> Self {
+    pub fn from_u56(val: u56) -> Self {
         let mut buint = BigUint56::zero();
         buint.limbs[0] = val;
         buint
     }
 
     // Constructs a BigUint56 from a byte array. Assumes that the byte array is little-endian.
-    fn from_bytes(bytes: [u8]) -> Self {
+    pub fn from_bytes(bytes: [u8]) -> Self {
         // TODO: Do I need this check?
         assert(bytes.len() as u56 <= MAX_BYTES as u56);
 
@@ -65,7 +65,7 @@ impl BigUint56 {
     }
 
     // Returns a byte array representation of the BigUint56. The bytes are in little-endian order.
-    fn to_bytes(self: Self) -> [u8; MAX_BYTES] {
+    pub fn to_bytes(self: Self) -> [u8; MAX_BYTES] {
         let mut res = [0 as u8; MAX_BYTES];
     
         for i in 0..NUM_LIMBS {
@@ -80,7 +80,7 @@ impl BigUint56 {
     }
 
     // Returns a bit array representation of the BigUint56. The least significant bit is at index 0.
-    fn to_bits(self: Self) -> [u1; MAX_BITS] {
+    pub fn to_bits(self: Self) -> [u1; MAX_BITS] {
         let mut res = [0 as u1; MAX_BITS];
     
         for i in 0..NUM_LIMBS {
@@ -139,7 +139,7 @@ impl BigUint56 {
     // Performs the multiplication operation.
     // Implements the long multiplication algorithm.
     // Returns the low and high parts of the result.
-    fn mul(self: Self, other: Self) -> (Self, Self) {
+    pub fn mul(self: Self, other: Self) -> (Self, Self) {
         let mut lo = BigUint56::zero();
         let mut hi = BigUint56::zero();
 
@@ -264,7 +264,7 @@ impl BigUint56 {
     }
 
     // Returns the number of bits in the big integer.
-    fn nbits(self: Self) -> u56 {
+    pub fn nbits(self: Self) -> u56 {
         let bits = BigUint56::to_bits(self);
         let mut res = 0;
         let mut done = false;
@@ -283,7 +283,7 @@ impl BigUint56 {
     // Performs long division and returns the quotient and remainder.
     // WARNING: This is a simple binary long division. More efficient algorithms should be considered.
     // TODO: Maybe https://github.com/okuyiga/noir-bigint/blob/d60cc5246c8b0d175c4d6b1f4aaceed7fb725695/bigint/src/division.nr
-    fn div(self: Self, other: Self) -> (Self, Self) {
+    pub fn div(self: Self, other: Self) -> (Self, Self) {
         assert(!other.is_zero());
 
         if self.lt(other) {
@@ -312,7 +312,7 @@ impl BigUint56 {
     }
 
     // Checks if self == other.
-    fn eq(self: Self, other: Self) -> bool {
+    pub fn eq(self: Self, other: Self) -> bool {
         let mut is_eq = true;
         for i in 0..NUM_LIMBS {
             is_eq = is_eq & (self.limbs[i] == other.limbs[i]);
@@ -321,29 +321,29 @@ impl BigUint56 {
     }
 
     // Checks if self >= other.
-    fn gte(self: Self, other: Self) -> bool {
+    pub fn gte(self: Self, other: Self) -> bool {
         let (_diff, borrow) = self.sbb(other);
         borrow == 0
     }
 
     // Checks if self > other.
-    fn gt(self: Self, other: Self) -> bool {
+    pub fn gt(self: Self, other: Self) -> bool {
         let (diff, borrow) = self.sbb(other);
         (borrow == 0) & !diff.eq(BigUint56::zero())
     }
 
     // Checks if self <= other.
-    fn lte(self: Self, other: Self) -> bool {
+    pub fn lte(self: Self, other: Self) -> bool {
         other.gte(self)
     }
 
     // Checks if self < other.
-    fn lt(self: Self, other: Self) -> bool {
+    pub fn lt(self: Self, other: Self) -> bool {
         other.gt(self)
     }
 
     // Checks if the big integer is zero.
-    fn is_zero(self: Self) -> bool {
+    pub fn is_zero(self: Self) -> bool {
         self.eq(BigUint56::zero())
     }
 
@@ -368,7 +368,7 @@ impl BigUint56 {
     // fn mul_mod(self: Self, other: Self, modulus: Self)
 
     // Print as bytes
-    fn println(self: Self) {
+    pub fn println(self: Self) {
         let bytes = self.to_bytes();
         println(bytes);
     }

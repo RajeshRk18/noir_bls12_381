@@ -9,42 +9,42 @@ struct Fp2 {
 
 // Fp2 tower extension impl
 impl Fp2 {
-    fn new(c0: Fp, c1: Fp) -> Self {
+    pub fn new(c0: Fp, c1: Fp) -> Self {
         Fp2{
             c0,
             c1,
         }
     }
 
-    fn zero() -> Fp2 {
+    pub fn zero() -> Fp2 {
         Fp2{
             c0: Fp::zero(),
             c1: Fp::zero(),
         }
     }
 
-    fn one() -> Fp2 {
+    pub fn one() -> Fp2 {
         Fp2{
             c0: Fp::one(),
             c1: Fp::zero(),
         }
     }
 
-    fn add(self: Self, other: Self) -> Self {
+    pub fn add(self: Self, other: Self) -> Self {
         Self{
             c0: self.c0.add(other.c0),
             c1: self.c1.add(other.c1),
         }
     }
 
-    fn sub(self: Self, other: Self) -> Self {
+    pub fn sub(self: Self, other: Self) -> Self {
         Self{
             c0: self.c0.sub(other.c0),
             c1: self.c1.sub(other.c1),
         }
     }
 
-    fn mul(self: Self, other: Self) -> Self {
+    pub fn mul(self: Self, other: Self) -> Self {
         let t1 = self.c0.mul(other.c0);
         let t0 = self.c0.add(self.c1);
         let t2 = self.c1.mul(other.c1);
@@ -60,14 +60,14 @@ impl Fp2 {
         }
     }
 
-    fn double(self: Self) -> Self {
+    pub fn double(self: Self) -> Self {
         Self {
             c0: self.c0.double(),
             c1: self.c1.double(),
         }
     }
 
-    fn square(self: Self) -> Self {
+    pub fn square(self: Self) -> Self {
         let ab = self.c0.mul(self.c1);
         let c0c1 = self.c0.add(self.c1);
         let c0 = self.c1.neg();
@@ -81,7 +81,7 @@ impl Fp2 {
         }
     }
 
-    fn neg(self: Self) -> Self {
+    pub fn neg(self: Self) -> Self {
         Self {
             c0: self.c0.neg(),
             c1: self.c1.neg(),
@@ -89,27 +89,27 @@ impl Fp2 {
     }
 
     // conjugate by negating c1
-    fn conjugate(self: Self) -> Self {
+    pub fn conjugate(self: Self) -> Self {
         Self {
             c0: self.c0,
             c1: self.c1.neg(),
         }
     }
 
-    fn eq(self: Self, other: Self) -> bool {
+    pub fn eq(self: Self, other: Self) -> bool {
         self.c0.eq(other.c0) & self.c1.eq(other.c1)
     }
     
-    fn is_zero(self: Self) -> bool {
+    pub fn is_zero(self: Self) -> bool {
         self.c0.is_zero() & self.c1.is_zero()
     }
 
-    fn is_one(self: Self) -> bool {
+    pub fn is_one(self: Self) -> bool {
         self.c0.is_one() & self.c1.is_zero()
     }
 
     // Algorithm 7 from: https://eprint.iacr.org/2010/354.pdf
-    fn mul_by_b0(self: Self, b0: Fp) -> Self {
+    pub fn mul_by_b0(self: Self, b0: Fp) -> Self {
         let c0 = self.c0.mul(b0);
         let c1 = self.c1.mul(b0);
 
@@ -120,7 +120,7 @@ impl Fp2 {
     }
 
     // Algorithm 8 from: https://eprint.iacr.org/2010/354.pdf
-    fn invert(self: Self) -> Self {
+    pub fn invert(self: Self) -> Self {
         let t0 = self.c0.mul(self.c0);
         let t1 = self.c1.mul(self.c1);
         let t0 = t0.add(t1);

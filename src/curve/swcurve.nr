@@ -18,17 +18,17 @@ struct Curve { // Short Weierstrass curve
 }
 
 impl Point {
-    fn from_affine(x: Fp, y: Fp) -> Self {
+    pub fn from_affine(x: Fp, y: Fp) -> Self {
         Self {x, y, z: Fp::one()}
     }
 
     // Additive identity
-    fn zero() -> Self {
+    pub fn zero() -> Self {
         Self {x: Fp::zero(), y: Fp::zero(), z: Fp::zero()}
     }
 
     // Check for equality
-    fn eq(self, p: Point) -> bool {
+    pub fn eq(self, p: Point) -> bool {
         let Self {x: x1, y: y1, z: z1} = self;
         let Self {x: x2, y: y2, z: z2} = p;
 
@@ -50,14 +50,14 @@ impl Point {
     }
 
     // Check if zero
-    fn is_zero(self) -> bool {
+    pub fn is_zero(self) -> bool {
         let Self {x: _x, y: _y, z} = self;
 
         z.is_zero()
     }
 
     // Negation
-    fn negate(self) -> Self {
+    pub fn negate(self) -> Self {
         let Self {x, y, z} = self;
 
         Self { x, y: y.neg(), z }
@@ -65,7 +65,7 @@ impl Point {
 
     // Convert to affine coordinates
     // TODO: Create affine struct
-    fn to_affine(self) -> (Fp, Fp) {
+    pub fn to_affine(self) -> (Fp, Fp) {
         assert(!self.z.is_zero());
 
         let zinv = self.z.invert();
@@ -78,14 +78,14 @@ impl Point {
     }
 
     // Print as bytes
-    fn println(self: Self) {
+    pub fn println(self: Self) {
         self.x.println();
         self.y.println();
         self.z.println();
     }
 
     // Print as bytes
-    fn println_affine(self: Self) {
+    pub fn println_affine(self: Self) {
         if (self.z.is_zero()) {
             println("O");
             println("O");
@@ -100,7 +100,7 @@ impl Point {
 
 impl Curve {
     // Curve constructor
-    fn new(a: Fp, b: Fp, gen: Point) -> Curve {
+    pub fn new(a: Fp, b: Fp, gen: Point) -> Curve {
         // Check curve coefficients
         assert(!(Fp::from_u56(4).mul(a.square().mul(a)).add(Fp::from_u56(27).mul(b.square()))).is_zero());
 
@@ -113,7 +113,7 @@ impl Curve {
     }
 
     // Membership check
-    fn contains(self, p: Point) -> bool {
+    pub fn contains(self, p: Point) -> bool {
         let Point {x, y, z} = p;
         
         let xx = x.square();
@@ -128,7 +128,7 @@ impl Curve {
     }
 
     // Point addition
-    fn add(self, p1: Point, p2: Point) -> Point {
+    pub fn add(self, p1: Point, p2: Point) -> Point {
         if p1.is_zero() {
             p2
         } else if p2.is_zero() {
@@ -170,12 +170,12 @@ impl Curve {
     }
 
     // Point subtraction
-    fn sub(self, p1: Point, p2: Point) -> Point {
+    pub fn sub(self, p1: Point, p2: Point) -> Point {
         self.add(p1, p2.negate())
     }
 
     // Point doubling
-    fn double(self, p: Point) -> Point {
+    pub fn double(self, p: Point) -> Point {
         let Point {x, y, z} = p;
         
         if p.is_zero() {
@@ -201,7 +201,7 @@ impl Curve {
     }
 
     // An example impl to compute 3*G
-    fn mul_Field(self, n: Field, p: Point) -> Point {
+    pub fn mul_Field(self, n: Field, p: Point) -> Point {
         let n_as_bits = n.to_le_bits(2);
         let mut out = Point::zero();
 

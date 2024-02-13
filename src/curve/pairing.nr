@@ -113,7 +113,7 @@ fn line_function_add_point(q: G2Point, r: G2Point, p: Point) -> LineEval {
     LineEval { l, T }
 }
 
-fn final_exponentiation(z: Fp12) -> Fp12 {
+pub fn final_exponentiation(z: Fp12) -> Fp12 {
     // Easy part
 
     let result = z;
@@ -156,7 +156,7 @@ fn final_exponentiation(z: Fp12) -> Fp12 {
     t1
 }
 
-fn miller_loop(Q: G2Point, P: Point) -> Fp12 {
+pub fn miller_loop(Q: G2Point, P: Point) -> Fp12 {
     let mut T = Q;
     let mut f = Fp12::one();
 
@@ -203,7 +203,7 @@ fn miller_loop(Q: G2Point, P: Point) -> Fp12 {
     f
 }
 
-fn pair(Q: G2Point, P: Point) -> Fp12 {
+pub fn pair(Q: G2Point, P: Point) -> Fp12 {
     let res = miller_loop(Q, P);
     let res = final_exponentiation(res);
     res

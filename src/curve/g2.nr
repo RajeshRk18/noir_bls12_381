@@ -19,18 +19,18 @@ struct G2Curve { // Short Weierstrass curve
 }
 
 impl G2Point {
-    fn from_affine(x: Fp2, y: Fp2) -> Self {
+    pub fn from_affine(x: Fp2, y: Fp2) -> Self {
         Self {x: x, y: y, z: Fp2::one()}
     }
 
     // Additive identity
-    fn zero() -> Self {
+    pub fn zero() -> Self {
         Self {x: Fp2::zero(), y: Fp2::zero(), z:Fp2::zero()}
     }
 
 
     // Check for equality
-    fn eq(self, p: G2Point) -> bool {
+    pub fn eq(self, p: G2Point) -> bool {
         let Self {x: x1, y: y1, z: z1} = self;
         let Self {x: x2, y: y2, z: z2} = p;
 
@@ -52,14 +52,14 @@ impl G2Point {
     }
 
     //Check if zero
-    fn is_zero(self) -> bool {
+    pub fn is_zero(self) -> bool {
         let Self {x: _x, y: _y, z} = self;
 
         z.is_zero()
     }
 
     // Negation
-    fn negate(self) -> Self {
+    pub fn negate(self) -> Self {
         let Self {x, y, z} = self;
 
         Self { x, y: y.neg(), z }
@@ -68,7 +68,7 @@ impl G2Point {
 
 impl G2Curve {
     // Curve constructor
-    fn new(a: Fp2, b: Fp2, gen: G2Point) -> G2Curve {
+    pub fn new(a: Fp2, b: Fp2, gen: G2Point) -> G2Curve {
         let curve = G2Curve { a, b, gen };
 
         // gen should be on the curve
@@ -78,7 +78,7 @@ impl G2Curve {
     }
 
     // Membership check
-    fn contains(self, p: G2Point) -> bool {
+    pub fn contains(self, p: G2Point) -> bool {
         let G2Point {x, y, z} = p;
         
         let xx = x.square();
@@ -93,7 +93,7 @@ impl G2Curve {
     }
 
     // Point addition
-    fn add(self, p1: G2Point, p2: G2Point) -> G2Point {
+    pub fn add(self, p1: G2Point, p2: G2Point) -> G2Point {
         if p1.is_zero() {
             p2
         } else if p2.is_zero() {
@@ -135,12 +135,12 @@ impl G2Curve {
     }
 
     // Point subtraction
-    fn sub(self, p1: G2Point, p2: G2Point) -> G2Point {
+    pub fn sub(self, p1: G2Point, p2: G2Point) -> G2Point {
         self.add(p1, p2.negate())
     }
 
     // Point doubling
-    fn double(self, p: G2Point) -> G2Point {
+    pub fn double(self, p: G2Point) -> G2Point {
         let G2Point {x, y, z} = p;
         
         if p.is_zero() {
@@ -165,7 +165,7 @@ impl G2Curve {
         }
     }
  
-    fn mul_Field(self, n: Field, p: G2Point) -> G2Point {
+    pub fn mul_Field(self, n: Field, p: G2Point) -> G2Point {
         let n_as_bits = n.to_le_bits(2);
         let mut out = G2Point::zero();
 

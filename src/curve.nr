@@ -29,7 +29,7 @@ struct BLS12_381 {
 }
 
 // Construct G1 curve for BLS12_381
-fn bls12_381() -> BLS12_381 {
+pub fn bls12_381() -> BLS12_381 {
     BLS12_381 {
         curve: Curve::new(
             Fp::zero(),
@@ -61,7 +61,7 @@ fn bls12_381() -> BLS12_381 {
 }
 
 // Construct G2 curve for BLS12_381
-fn bls12_381_g2() -> BLS12_381G2 {
+pub fn bls12_381_g2() -> BLS12_381G2 {
     // Construct a, b, and gen for G2 Curve
     // G2_A, G2_B_ G2_GENERATOR_X, and G2_GENERATOR_Y
 

@@ -9,42 +9,42 @@ struct Fp12 {
 }
 
 impl Fp12 {
-    fn new(c0: Fp6, c1: Fp6) -> Self {
+    pub fn new(c0: Fp6, c1: Fp6) -> Self {
         Fp12{
             c0,
             c1,
         }
     }
 
-    fn zero() -> Fp12 {
+    pub fn zero() -> Fp12 {
         Fp12{
             c0: Fp6::zero(),
             c1: Fp6::zero(),
         }
     }
 
-    fn one() -> Fp12 {
+    pub fn one() -> Fp12 {
         Fp12{
             c0: Fp6::one(),
             c1: Fp6::zero(),
         }
     }
 
-    fn add(self: Self, other: Self) -> Self {
+    pub fn add(self: Self, other: Self) -> Self {
         Self{
             c0: self.c0.add(other.c0),
             c1: self.c1.add(other.c1),
         }
     }
 
-    fn sub(self: Self, other: Self) -> Self {
+    pub fn sub(self: Self, other: Self) -> Self {
         Self{
             c0: self.c0.sub(other.c0),
             c1: self.c1.sub(other.c1),
         }
     }
 
-    fn mul(self: Self, other: Self) -> Self {
+    pub fn mul(self: Self, other: Self) -> Self {
         let t0 = self.c0.mul(other.c0);
         let t1 = self.c1.mul(other.c1);
         let t2 = other.c0.add(other.c1);
@@ -63,14 +63,14 @@ impl Fp12 {
         }
     }
 
-    fn double(self: Self) -> Self {
+    pub fn double(self: Self) -> Self {
         Self {
             c0: self.c0.double(),
             c1: self.c1.double(),
         }
     }
 
-    fn square(self: Self) -> Self {
+    pub fn square(self: Self) -> Self {
         let ab = self.c0.mul(self.c1);
         let c0c1 = self.c0.add(self.c1);
         let c0 = self.c1.mul_by_nonresidue();
@@ -88,29 +88,29 @@ impl Fp12 {
         }
     }
 
-    fn neg(self: Self) -> Self {
+    pub fn neg(self: Self) -> Self {
         Self {
             c0: self.c0.neg(),
             c1: self.c1.neg(),
         }
     }
 
-    fn conjugate(self: Self) -> Self {
+    pub fn conjugate(self: Self) -> Self {
         Self {
             c0: self.c0,
             c1: self.c1.neg(),
         }
     }
 
-    fn eq(self: Self, other: Self) -> bool {
+    pub fn eq(self: Self, other: Self) -> bool {
         self.c0.eq(other.c0) & self.c1.eq(other.c1)
     }
     
-    fn is_zero(self: Self) -> bool {
+    pub fn is_zero(self: Self) -> bool {
         self.c0.is_zero() & self.c1.is_zero()
     }
 
-    fn is_one(self: Self) -> bool {
+    pub fn is_one(self: Self) -> bool {
         self.c0.is_one() & self.c1.is_zero()
     }
 
@@ -131,7 +131,7 @@ impl Fp12 {
     //    }
     //}
 
-    fn invert(self: Self) -> Self {
+    pub fn invert(self: Self) -> Self {
         let c0s = self.c0.mul(self.c0);
         let c1s = self.c1.mul(self.c1);
         let c1s = c1s.mul_by_nonresidue();
@@ -149,7 +149,7 @@ impl Fp12 {
     }
 
     // Algorithm 28 from: https://eprint.iacr.org/2010/354.pdf
-    fn frobenius(self: Self) -> Self {
+    pub fn frobenius(self: Self) -> Self {
         let t1 = self.c0.c0.conjugate();
         let t2 = self.c1.c0.conjugate();
         let t3 = self.c0.c1.conjugate();
@@ -182,7 +182,7 @@ impl Fp12 {
     }
 
     // Algorithm 29 from: https://eprint.iacr.org/2010/354.pdf
-    fn frobenius_square(self: Self) -> Self {
+    pub fn frobenius_square(self: Self) -> Self {
         let t1 = self.c0.c0;
         let t2 = self.c1.c0.mul_by_non_residue_2_power_1();
         let t3 = self.c0.c1.mul_by_non_residue_2_power_2();
@@ -209,7 +209,7 @@ impl Fp12 {
     }
 
     // Algorithm 30 from: https://eprint.iacr.org/2010/354.pdf
-    fn frobenius_cube(self: Self) -> Self {
+    pub fn frobenius_cube(self: Self) -> Self {
         let t1 = self.c0.c0.conjugate();
         let t2 = self.c1.c0.conjugate();
         let t3 = self.c0.c1.conjugate();
@@ -241,7 +241,7 @@ impl Fp12 {
         }
     }
 
-    fn cyclotomic_square(self: Self) -> Self {
+    pub fn cyclotomic_square(self: Self) -> Self {
         let t0 = self.c1.c1.square();
         let t1 = self.c0.c0.square();
         let t6 = self.c1.c1.add(self.c0.c0);
@@ -311,7 +311,7 @@ impl Fp12 {
         }
     }
 
-    fn n_square(self: Self, N: Field) -> Self {
+    pub fn n_square(self: Self, N: Field) -> Self {
         let mut out = self;
 
         for i in 0..2 {
@@ -321,7 +321,7 @@ impl Fp12 {
         out
     }
 
-    fn exponentiation(self: Self) -> Self {
+    pub fn exponentiation(self: Self) -> Self {
         let six: Field = 6;
         let seven: Field = 7;
         let eight: Field = 8;

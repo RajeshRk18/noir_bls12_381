@@ -10,7 +10,7 @@ struct Fp6 {
 }
 
 impl Fp6 {
-    fn new(c0: Fp2, c1: Fp2, c2: Fp2) -> Self {
+    pub fn new(c0: Fp2, c1: Fp2, c2: Fp2) -> Self {
         Fp6{
             c0,
             c1,
@@ -18,7 +18,7 @@ impl Fp6 {
         }
     }
 
-    fn zero() -> Fp6 {
+    pub fn zero() -> Fp6 {
         Fp6{
             c0: Fp2::zero(),
             c1: Fp2::zero(),
@@ -26,7 +26,7 @@ impl Fp6 {
         }
     }
 
-    fn one() -> Fp6 {
+    pub fn one() -> Fp6 {
         Fp6{
             c0: Fp2::one(),
             c1: Fp2::zero(),
@@ -34,7 +34,7 @@ impl Fp6 {
         }
     }
 
-    fn add(self: Self, other: Self) -> Self {
+    pub fn add(self: Self, other: Self) -> Self {
         Self{
             c0: self.c0.add(other.c0),
             c1: self.c1.add(other.c1),
@@ -42,7 +42,7 @@ impl Fp6 {
         }
     }
 
-    fn sub(self: Self, other: Self) -> Self {
+    pub fn sub(self: Self, other: Self) -> Self {
         Self{
             c0: self.c0.sub(other.c0),
             c1: self.c1.sub(other.c1),
@@ -50,7 +50,7 @@ impl Fp6 {
         }
     }
 
-    fn mul(self: Self, other: Self) -> Self {
+    pub fn mul(self: Self, other: Self) -> Self {
         let a_a = self.c0.mul(other.c0);
         let b_b = self.c1.mul(other.c1);
         let c_c = self.c2.mul(other.c2);
@@ -94,7 +94,7 @@ impl Fp6 {
         }
     }
 
-    fn double(self: Self) -> Self {
+    pub fn double(self: Self) -> Self {
         Self {
             c0: self.c0.double(),
             c1: self.c1.double(),
@@ -103,7 +103,7 @@ impl Fp6 {
     }
 
     // Algorithm 16 from: https://eprint.iacr.org/2010/354.pdf
-    fn square(self: Self) -> Self {
+    pub fn square(self: Self) -> Self {
         let c4 = self.c0.mul(self.c1);
         let c4 = c4.double();
         let c5 = self.c2.square();
@@ -129,7 +129,7 @@ impl Fp6 {
         }
     }
 
-    fn neg(self: Self) -> Self {
+    pub fn neg(self: Self) -> Self {
         Self {
             c0: self.c0.neg(),
             c1: self.c1.neg(),
@@ -137,19 +137,19 @@ impl Fp6 {
         }
     }
 
-    fn eq(self: Self, other: Self) -> bool {
+    pub fn eq(self: Self, other: Self) -> bool {
         self.c0.eq(other.c0) & self.c1.eq(other.c1) & self.c2.eq(other.c2)
     }
     
-    fn is_zero(self: Self) -> bool {
+    pub fn is_zero(self: Self) -> bool {
         self.c0.is_zero() & self.c1.is_zero() & self.c2.is_zero()
     }
 
-    fn is_one(self: Self) -> bool {
+    pub fn is_one(self: Self) -> bool {
         self.c0.is_one() & self.c1.is_zero() & self.c2.is_zero()
     }
 
-    fn invert(self: Self) -> Self {
+    pub fn invert(self: Self) -> Self {
         let c0 = self.c2;
         let c0 = c0.mul_by_nonresidue();
         let c0 = c0.mul(self.c1);
@@ -196,7 +196,7 @@ impl Fp6 {
     }
 
     // Algorithm 17 from: https://eprint.iacr.org/2010/354.pdf
-    fn invert_x(self: Self) -> Self {
+    pub fn invert_x(self: Self) -> Self {
         let t0 = self.c0.square();
         let t1 = self.c1.square();
         let t2 = self.c2.square();
@@ -238,7 +238,7 @@ impl Fp6 {
 
     // Multiply by cubic nonresidue v
     // c0, c1, c2 -> c2, c0, c1
-    fn mul_by_nonresidue(self: Self) -> Self {
+    pub fn mul_by_nonresidue(self: Self) -> Self {
         let c0 = self.c2.mul_by_nonresidue();
         let c1 = self.c0;
         let c2 = self.c1;
